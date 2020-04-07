@@ -1,7 +1,7 @@
 
-set(CHAPTER_NAME chapter3)
+set(CHAPTER_NAME chapter4)
 
-set(SRCS Source.cpp)
+set(SRCS Source.cpp Enemy.h Enemy.cpp Hero.h Hero.cpp Rocket.h Rocket.cpp)
 
 add_executable(${CHAPTER_NAME} ${SRCS})
 
