@@ -11,11 +11,11 @@ set_property(TARGET ${CHAPTER_NAME} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY $<TAR
 #copy dll to build dir
 add_custom_command(TARGET ${CHAPTER_NAME} PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${SFML_DLL}
-        $<TARGET_FILE_DIR:${CHAPTER_NAME}>)
+			${SFML_DLL}
+			$<TARGET_FILE_DIR:${CHAPTER_NAME}>)
 		
 #copy assets
 add_custom_command(TARGET ${CHAPTER_NAME} PRE_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${ASSETS}
-        $<TARGET_FILE_DIR:${CHAPTER_NAME}>/Assets)
+			${ASSETS}
+			$<TARGET_FILE_DIR:${CHAPTER_NAME}>/Assets)
