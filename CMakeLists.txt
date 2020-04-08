@@ -26,9 +26,12 @@ set(GLFW_DLL "${GLFW_DIR}/lib-vc2017/glfw3.dll")
 set(GLFW_LIB "${GLFW_DIR}/lib-vc2017/glfw3dll.lib")
 set(GLFW_INCLUDE "${GLFW_DIR}/include")
 
+#glm header only lib
+set(GLFM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
+set(GLM_INCLUDE "${GLFM_DIR}")
 find_package(OpenGL REQUIRED)
 
-include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE})
+include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE} ${GLM_INCLUDE})
 link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} ${GLFW_LIB} ${OPENGL_LIBRARIES})
 
 add_subdirectory(source)
