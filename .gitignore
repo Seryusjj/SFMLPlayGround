@@ -1,2 +1,4 @@
 build/
 /.vs
+external/bullet3/
+external/stb/

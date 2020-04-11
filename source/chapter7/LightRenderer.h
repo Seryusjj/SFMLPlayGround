@@ -14,14 +14,14 @@ class LightRenderer
 {
 
 public:
-	LightRenderer(MeshType meshType, Camera* camera);
+	LightRenderer(MeshType modelType, Camera* camera);
 	~LightRenderer();
 
 	void draw();
 
 	void setPosition(glm::vec3 _position);
 	void setColor(glm::vec3 _color);
-	void setProgram(GLuint _program);
+	void setProgram(GLuint program);
 
 	glm::vec3 getPosition();
 	glm::vec3 getColor();
@@ -31,11 +31,11 @@ private:
 
 	Camera* camera;
 
-	std::vector<Vertex> vertices;
-	std::vector<GLuint> indices;
+	std::vector<Vertex>vertices;
+	std::vector<GLuint>indices;
 
 	GLuint vbo, ebo, vao, program;
-
+	
 	glm::vec3 position, color;
 
 };
