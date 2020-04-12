@@ -1,5 +1,4 @@
 build/
 /.vs
-external/bullet3/
-external/stb/
-external/glm/
+external/bullet3/build/
+external/freetype2/build/

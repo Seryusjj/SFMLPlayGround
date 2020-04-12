@@ -88,9 +88,39 @@ file(GLOB BULLET_LIBRARIES ${BULLET_LIBRARY_DIRS}/*.lib )
 #include STB lib header only lib
 set(STB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
 
+#build and add freetype
+set(FREETYPE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype2)
+set(FREETYPE_BUILD_DIR ${FREETYPE_DIR}/build)
+set(FREETYPE_INSTALL_DIR ${FREETYPE_BUILD_DIR}/install)
+set(FRETYPE_CONFIG ${FREETYPE_INSTALL_DIR}/lib/cmake/freetype/freetype-config.cmake)
+
+#if not found just build the lib
+if(NOT EXISTS ${FRETYPE_CONFIG})    
+    set(FREETYPE_CACHE_ARGS 
+            -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+			-DBUILD_SHARED_LIBS:BOOL=true
+            -DCMAKE_INSTALL_PREFIX:STRING=${FREETYPE_INSTALL_DIR}
+            -DCMAKE_GENERATOR_PLATFORM:STRING=${CMAKE_GENERATOR_PLATFORM}
+            -DCMAKE_GENERATOR:STRING=${CMAKE_GENERATOR})
+    file(MAKE_DIRECTORY ${FREETYPE_BUILD_DIR})	
+	#configure freetype
+	execute_process(
+		COMMAND ${CMAKE_COMMAND} ../ ${FREETYPE_CACHE_ARGS}
+		WORKING_DIRECTORY ${FREETYPE_BUILD_DIR}	
+	)
+	#build freetype
+	execute_process(
+		COMMAND ${CMAKE_COMMAND} --build ${FREETYPE_BUILD_DIR} --target INSTALL --config ${CMAKE_BUILD_TYPE}
+		WORKING_DIRECTORY ${FREETYPE_BUILD_DIR}	
+	)    
+endif()
+
+#this will create the freetype target
+include(${FRETYPE_CONFIG})
+file(GLOB FREETYPE_DLL ${FREETYPE_INSTALL_DIR}/bin/*)
 
 
 include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE} ${GLM_INCLUDE})
-link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} ${GLFW_LIB} ${OPENGL_LIBRARIES})
+link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES})
 
 add_subdirectory(source)
