@@ -5,7 +5,7 @@ project(SFMLPlayGround)
 #Only x64 is supported
 set(CMAKE_GENERATOR_PLATFORM x64)
 #options
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "se Debug or Release build, the 3trd party will be compiled as such")
+set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "set Debug or Release build, the 3rd party will be compiled as such")
 
 set(ASSETS "${CMAKE_CURRENT_SOURCE_DIR}/assets")
 
@@ -23,7 +23,6 @@ set(GLEW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glew-2.1.0")
 set(GLEW_DLL "${GLEW_DIR}/bin/Release/x64/glew32.dll")
 set(GLEW_LIB "${GLEW_DIR}/lib/Release/x64/glew32.lib")
 set(GLEW_INCLUDE "${GLEW_DIR}/include")
-
 
 #shared lib GLFW precompiled
 set(GLFW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glfw-3.3.2")
@@ -45,7 +44,7 @@ set(BULLET_INSTALL_DIR ${BULLET_BUILD_DIR}/install)
 set(BULET_CACHE_ARGS 
         -DBUILD_SHARED_LIBS:BOOL=OFF 
         -DINSTALL_LIBS:BOOL=ON
-		-DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=ON
+        -DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=ON
         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
         -DCMAKE_INSTALL_PREFIX:STRING=${BULLET_INSTALL_DIR}
         -DCMAKE_GENERATOR_PLATFORM:STRING=${CMAKE_GENERATOR_PLATFORM}
@@ -70,7 +69,7 @@ endif()
 if(NOT BULLET_FOUND)
 	#configure bullet
 	execute_process(
-		COMMAND ${CMAKE_COMMAND} .. ${BULET_CACHE_ARGS}
+		COMMAND ${CMAKE_COMMAND} ../ ${BULET_CACHE_ARGS}
 		WORKING_DIRECTORY ${BULLET_BUILD_DIR}	
 	)
 	#build bullet
@@ -83,30 +82,12 @@ endif()
 
 set(BULLET_INCLUDE_DIRS "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIRS}")
 set(BULLET_LIBRARY_DIRS "${BULLET_ROOT_DIR}/${BULLET_LIBRARY_DIRS}")
-message(${BULLET_LIBRARY_DIRS})
+
 file(GLOB BULLET_LIBRARIES ${BULLET_LIBRARY_DIRS}/*.lib )
-message(${BULLET_LIBRARIES})
+
 #include STB lib header only lib
 set(STB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
 
-message(${BULLET_LIBRARY_DIRS})
-
-#this will compile the lib when compileing the project, I wnated to compile dependencies at config time so used execute_process instead
-#ExternalProject_Add (
-#    bullet3    
-#	
-#    PREFIX            ""
-#    SOURCE_DIR        ${BULLET_3_DIR}
-#	 BINARY_DIR		  ${BULLET_3_DIR}/build	
-#
-#    BUILD_ALWAYS      OFF
-#    INSTALL_DIR       ${BULLET_INSTALL_DIR}
-#	
-#	 CMAKE_CACHE_ARGS ${BULET_CACHE_ARGS}
-#
-#    BUILD_COMMAND ${CMAKE_COMMAND} --build ${BULLET_3_DIR}/build --target INSTALL --config Release
-#)
-#once bullet3 is compiled tell cmake how to use the generated libs
 
 
 include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE} ${GLM_INCLUDE})

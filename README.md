@@ -1,7 +1,9 @@
 # SFMLPlayGround
 
 This project is a playground to learn how to code OpenGL & Vulkan using SFML library, at the minute only windows builds are supported using CMake and Visual studio 2017.
+
 After cloning the project do "git submodule update --init --recursive" to get some 3rd party libraries.
+
 Here you can check the configuration used in CMake-gui.
 ![](https://raw.githubusercontent.com/Seryusjj/SFMLPlayGround/master/howToBuild.png)
 
