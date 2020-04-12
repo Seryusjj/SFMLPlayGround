@@ -1,5 +1,5 @@
 
-set(CHAPTER_NAME opengl)
+set(CHAPTER_NAME opengl1)
 file(GLOB CODE *.cpp)
 file(GLOB HEADER *.h)
 file(GLOB GLAD_SOURCE ${GLAD_SRC_DIR}/*)
