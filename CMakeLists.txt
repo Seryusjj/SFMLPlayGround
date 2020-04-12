@@ -17,6 +17,10 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${SFML_DIR}/lib/cmake/SFML")
 include(SFMLSharedTargets)
 include(ExternalProject)
 
+#glad opengl loader (can replace GLEW)
+set(GLAD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/glad)
+set(GLAD_INCLUDE_DIR ${GLAD_DIR}/include)
+set(GLAD_SRC_DIR ${GLAD_DIR}/src)
 
 #shared GLEW precompiled
 set(GLEW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glew-2.1.0")
@@ -24,11 +28,42 @@ set(GLEW_DLL "${GLEW_DIR}/bin/Release/x64/glew32.dll")
 set(GLEW_LIB "${GLEW_DIR}/lib/Release/x64/glew32.lib")
 set(GLEW_INCLUDE "${GLEW_DIR}/include")
 
-#shared lib GLFW precompiled
-set(GLFW_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glfw-3.3.2")
-set(GLFW_DLL "${GLFW_DIR}/lib-vc2017/glfw3.dll")
-set(GLFW_LIB "${GLFW_DIR}/lib-vc2017/glfw3dll.lib")
-set(GLFW_INCLUDE "${GLFW_DIR}/include")
+#shared lib GLFW
+set(GLFW_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw)
+set(GLFW_BUILD_DIR ${GLFW_DIR}/build)
+set(GLFW_INSTALL_DIR ${GLFW_BUILD_DIR}/install)
+set(GLFW_CONFIG ${GLFW_INSTALL_DIR}/lib/cmake/glfw3/glfw3Config.cmake)
+set(GLFW_INCLUDE ${GLFW_INSTALL_DIR}/include)
+#if not found just build the lib
+if(NOT EXISTS ${GLFW_CONFIG})    
+    set(GLFW_CACHE_ARGS 
+            -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+			-DBUILD_SHARED_LIBS:BOOL=ON
+			-DGLFW_INSTALL:BOOL=ON
+			-DUSE_MSVC_RUNTIME_LIBRARY_DLL:BOOL=ON
+            -DCMAKE_INSTALL_PREFIX:STRING=${GLFW_INSTALL_DIR}
+            -DCMAKE_GENERATOR_PLATFORM:STRING=${CMAKE_GENERATOR_PLATFORM}
+            -DCMAKE_GENERATOR:STRING=${CMAKE_GENERATOR}
+			-DGLFW_BUILD_DOCS:BOOL=OFF
+			-DGLFW_BUILD_EXAMPLES:BOOL=OFF
+			-DGLFW_BUILD_TEST:BOOL=OFF)
+    file(MAKE_DIRECTORY ${GLFW_BUILD_DIR})	
+	#configure glfw
+	execute_process(
+		COMMAND ${CMAKE_COMMAND} ../ ${GLFW_CACHE_ARGS}
+		WORKING_DIRECTORY ${GLFW_BUILD_DIR}	
+	)
+	#build glfw
+	execute_process(
+		COMMAND ${CMAKE_COMMAND} --build ${GLFW_BUILD_DIR} --target INSTALL --config ${CMAKE_BUILD_TYPE}
+		WORKING_DIRECTORY ${GLFW_BUILD_DIR}	
+	)    
+endif()
+
+#this will create the freetype target
+include(${GLFW_CONFIG})
+file(GLOB GLFW_DLL ${GLFW_INSTALL_DIR}/bin/*)
+
 
 #glm header only lib
 set(GLFM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
@@ -92,10 +127,10 @@ set(STB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
 set(FREETYPE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/freetype2)
 set(FREETYPE_BUILD_DIR ${FREETYPE_DIR}/build)
 set(FREETYPE_INSTALL_DIR ${FREETYPE_BUILD_DIR}/install)
-set(FRETYPE_CONFIG ${FREETYPE_INSTALL_DIR}/lib/cmake/freetype/freetype-config.cmake)
+set(FREETYPE_CONFIG ${FREETYPE_INSTALL_DIR}/lib/cmake/freetype/freetype-config.cmake)
 
 #if not found just build the lib
-if(NOT EXISTS ${FRETYPE_CONFIG})    
+if(NOT EXISTS ${FREETYPE_CONFIG})    
     set(FREETYPE_CACHE_ARGS 
             -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
 			-DBUILD_SHARED_LIBS:BOOL=true
@@ -116,11 +151,13 @@ if(NOT EXISTS ${FRETYPE_CONFIG})
 endif()
 
 #this will create the freetype target
-include(${FRETYPE_CONFIG})
+include(${FREETYPE_CONFIG})
 file(GLOB FREETYPE_DLL ${FREETYPE_INSTALL_DIR}/bin/*)
 
 
+
+
 include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE} ${GLM_INCLUDE})
-link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} ${GLFW_LIB} ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES})
+link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} glfw ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES})
 
 add_subdirectory(source)

@@ -10,3 +10,5 @@ Here you can check the configuration used in CMake-gui.
 
 
 This is a port from [CPP-Game-Development-By-Example](https://www.packtpub.com/web-development/c-game-development-example?utm_source=Github&utm_medium=Repository&utm_campaign=9781789535303). Which source code is in this [Repo](https://github.com/PacktPublishing/CPP-Game-Development-By-Example)
+
+The GLAD loader for opengl 3.3 can be seen in this [link](http://gen.glad.sh/#profile=gl%3Dcore%2Cgles1%3Dcommon&api=gl%3D3.3&options=LOADER&generator=c)
