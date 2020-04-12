@@ -6,4 +6,7 @@ add_subdirectory(chapter6.1)
 add_subdirectory(chapter6.2)
 add_subdirectory(chapter7)
 add_subdirectory(chapter8)
+
+# this series are from the web 
+# https://learnopengl.com
 add_subdirectory(opengl1)

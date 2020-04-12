@@ -53,7 +53,7 @@ set(STB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/external/stb)
 #build and add freetype
 build_freetype_and_set_env()
 
-#global includes anb links for all projects
+#global includes and links for all projects
 include_directories(${SFML_INCLUDE} ${GLEW_INCLUDE} ${GLFW_INCLUDE} ${GLM_INCLUDE})
 link_libraries(sfml-graphics sfml-audio ${GLEW_LIB} glfw ${OPENGL_LIBRARIES} ${FREETYPE_LIBRARIES})
 

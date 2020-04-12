@@ -43,8 +43,8 @@ function(build_bullet_and_set_env)
 	endif()
 	
 	#expose variables to global scope
-	set(BULLET_INCLUDE_DIRS "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIRS}" CACHE INTERNAL "Bullet ionclude directory")
-	set(BULLET_LIBRARY_DIRS "${BULLET_ROOT_DIR}/${BULLET_LIBRARY_DIRS}" CACHE INTERNAL "Bullet .lib directorz")
+	set(BULLET_INCLUDE_DIRS "${BULLET_ROOT_DIR}/${BULLET_INCLUDE_DIRS}" CACHE INTERNAL "Bullet include directory")
+	set(BULLET_LIBRARY_DIRS "${BULLET_ROOT_DIR}/${BULLET_LIBRARY_DIRS}" CACHE INTERNAL "Bullet .lib directory")
 	file(GLOB BULLET_LIBRARIES ${BULLET_LIBRARY_DIRS}/*.lib)
 	set(BULLET_LIBRARIES  ${BULLET_LIBRARIES} CACHE INTERNAL "Bullet .lib files for static compilation")
 endfunction(build_bullet_and_set_env)
